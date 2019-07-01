@@ -36,6 +36,15 @@ esma_add_library (${this}
   SRCS ${SRCS}
   DEPENDENCIES fvgcm GMAO_transf arpack
   )
+
+ecbuild_add_executable(TARGET fsens2pert.x SOURCES fsens2pert.f90 LIBS ${this})
+ecbuild_add_executable(TARGET initadj.x SOURCES initadj.f90 LIBS ${this})
+ecbuild_add_executable(TARGET pertenergy.x SOURCES pertenergy.f90 LIBS ${this})
+ecbuild_add_executable(TARGET postStats.x SOURCES postStats.f90 LIBS ${this})
+ecbuild_add_executable(TARGET pseudo.x SOURCES pseudo.f90 LIBS ${this})
+ecbuild_add_executable(TARGET simsv.x SOURCES simsv.f90 LIBS ${this})
+#ecbuild_add_executable(TARGET svspectra.x SOURCES svspectra.f90 LIBS ${this})
+
 if (EXTENDED_SOURCE)
   set_target_properties (${this} PROPERTIES COMPILE_FLAGS ${EXTENDED_SOURCE})
 endif()
