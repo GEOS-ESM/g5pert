@@ -46,3 +46,27 @@ string(REPLACE " " ";" tmp ${FREAL8})
 foreach(flag ${tmp})
   target_compile_options (${this} PRIVATE $<$<COMPILE_LANGUAGE:Fortran>:${flag}>)
 endforeach()
+
+install (
+   FILES simsv.rc.sample
+   DESTINATION etc
+   RENAME simsv.rc
+   )
+
+install (
+   FILES initadj.rc.sample
+   DESTINATION etc
+   RENAME initadj.rc
+   )
+
+install (
+   FILES postStats.rc.sample
+   DESTINATION etc
+   RENAME postStats.rc
+   )
+
+install (
+   FILES pertenergy.rc.tmpl
+   DESTINATION etc
+   )
+
