@@ -12,29 +12,13 @@ foreach(flag ${tmp})
   target_compile_options (${this} PRIVATE $<$<COMPILE_LANGUAGE:Fortran>:${flag}>)
 endforeach()
 
-install (
-   FILES fvsvec.rc.sample
-   DESTINATION etc
-   RENAME fvsvec.rc
+foreach (rc fvsvec jactest pseudo tracer)
+  install (
+    FILES ${rc}.rc.sample
+    DESTINATION etc
+    RENAME ${rc}.rc
    )
-
-install (
-   FILES jactest.rc.sample
-   DESTINATION etc
-   RENAME jactest.rc
-   )
-
-install (
-   FILES pseudo.rc.sample
-   DESTINATION etc
-   RENAME pseudo.rc
-   )
-
-install (
-   FILES tracer.rc.sample
-   DESTINATION etc
-   RENAME tracer.rc
-   )
+endforeach ()
 
 file (GLOB tmpl_files *.tmpl)
 
