@@ -56,23 +56,13 @@ foreach(flag ${tmp})
   target_compile_options (${this} PRIVATE $<$<COMPILE_LANGUAGE:Fortran>:${flag}>)
 endforeach()
 
-install (
-   FILES simsv.rc.sample
-   DESTINATION etc
-   RENAME simsv.rc
+foreach (rc simsv initadj postStats)
+  install (
+    FILES ${rc}.rc.sample
+    DESTINATION etc
+    RENAME ${rc}.rc
    )
-
-install (
-   FILES initadj.rc.sample
-   DESTINATION etc
-   RENAME initadj.rc
-   )
-
-install (
-   FILES postStats.rc.sample
-   DESTINATION etc
-   RENAME postStats.rc
-   )
+endforeach ()
 
 install (
    FILES pertenergy.rc.tmpl
