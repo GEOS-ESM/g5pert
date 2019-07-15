@@ -51,11 +51,13 @@ endif()
 
 target_compile_definitions (${this} PRIVATE REAL8 LSMH_off VERSION=\"fvgcm\")
 target_compile_definitions (${this} PRIVATE SPMD  GFIO CHECKPOINTING LINUX)
-string(REPLACE " " ";" tmp ${FREAL8})
-foreach(flag ${tmp})
-  target_compile_options (${this} PRIVATE $<$<COMPILE_LANGUAGE:Fortran>:${flag}>)
-  target_compile_options (svspectra.x PRIVATE $<$<COMPILE_LANGUAGE:Fortran>:${flag}>)
-endforeach()
+
+foreach (target ${this} fsens2pert.x initadj.x pertenergy.x postStats.x pseudo.x simsv.x svspectra.x)
+   string(REPLACE " " ";" tmp ${FREAL8})
+   foreach(flag ${tmp})
+      target_compile_options (${target} PRIVATE $<$<COMPILE_LANGUAGE:Fortran>:${flag}>)
+   endforeach()
+endforeach ()
 
 foreach (rc simsv initadj postStats)
   install (

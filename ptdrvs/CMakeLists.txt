@@ -17,10 +17,13 @@ ecbuild_add_executable(TARGET qsens.x SOURCES qsens.F90 LIBS GMAO_mpeu fvgcm sve
 
 target_compile_definitions (${this} PRIVATE REAL8 LSMH_off VERSION=\"fvgcm\")
 target_compile_definitions (${this} PRIVATE SPMD  GFIO CHECKPOINTING LINUX)
-string(REPLACE " " ";" tmp ${FREAL8})
-foreach(flag ${tmp})
-  target_compile_options (${this} PRIVATE $<$<COMPILE_LANGUAGE:Fortran>:${flag}>)
-endforeach()
+
+foreach (target ${this} fvmodel.x fvpert.x fvsens.x fvsvec.x jactest.x qpert.x qsens.x)
+   string(REPLACE " " ";" tmp ${FREAL8})
+   foreach(flag ${tmp})
+      target_compile_options (${target} PRIVATE $<$<COMPILE_LANGUAGE:Fortran>:${flag}>)
+   endforeach()
+endforeach ()
 
 foreach (rc fvsvec jactest pseudo tracer)
   install (
