@@ -17,4 +17,4 @@ target_sources (fvgcm PRIVATE
   m_pmgrid.F  m_comsrf.F
 )
 
-target_include_directories (fvgcm PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories (fvgcm PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>)

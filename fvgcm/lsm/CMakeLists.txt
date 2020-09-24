@@ -9,5 +9,5 @@ target_sources (fvgcm PRIVATE
   atmini.F    cell_edge.F  histcrt.F    histtc.F   lsmctli.F  lsmtci.F   msspni.F   relavu.F   snoh2o.F   stoprun.F  twostr.F
 )
 
-target_include_directories (fvgcm PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories (fvgcm PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>)
 

@@ -3,4 +3,4 @@ target_sources (fvgcm PRIVATE
   memstuff.c  mp_assign_to_cpu.c  pio_util.c
 )
 
-target_include_directories (fvgcm PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories (fvgcm PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>)

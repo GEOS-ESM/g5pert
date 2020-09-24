@@ -15,9 +15,12 @@ add_custom_command (OUTPUT fvgcm.h
 
 add_custom_target (fvgcm_inc DEPENDS fvgcm.h)
 
-esma_add_library (${this} SRCS ecbuild_kludge.F90)
+esma_add_library (${this} 
+   SRCS ecbuild_kludge.F90
+   INCLUDES 
+      $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+   )
 add_dependencies (${this} fvgcm_inc)
-target_include_directories (${this} PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
 
 if (EXTENDED_SOURCE)
   set_target_properties (${this} PROPERTIES COMPILE_FLAGS ${EXTENDED_SOURCE})

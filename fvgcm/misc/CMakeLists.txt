@@ -7,4 +7,4 @@ target_sources (fvgcm PRIVATE
   timingModule.F90 adtimingmodule.F90 g_timingmodule.F90
 )
 
-target_include_directories (fvgcm PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories (fvgcm PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>)

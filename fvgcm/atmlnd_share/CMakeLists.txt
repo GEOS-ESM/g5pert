@@ -4,4 +4,4 @@ target_sources (fvgcm PRIVATE
   infnan.F90     linebuf_stdout.c  precision.F90 wrap_mpi.F90
 )
 
-target_include_directories (fvgcm PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories (fvgcm PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>)
