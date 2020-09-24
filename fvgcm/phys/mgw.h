@@ -85,10 +85,7 @@ c-
      $     kbotbg, kbotoro, 
      $     ktopbg, ktoporo  
 #ifdef LOGENTRY 
-$Log$
-Revision 1.1.1.1.2.1  2001/11/26 22:59:05  jchern
-MLP/MPI version of fvccm
-
+$Log: mgw.h,v $
 Revision 1.3  2001/10/08 18:37:58  sjlin
 *** empty log message ***
 

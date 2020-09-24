@@ -1072,13 +1072,13 @@
 ! !INTERFACE:
       subroutine stepon_do ( prog )
 
-c$$$#if defined( _TRAJECTORY_ )
-c$$$      use m_iostate, only : putstate
-c$$$#endif
-c$$$
-c$$$#if defined( EXTERNAL_TRAJECTORY )
-c$$$       use m_iostate, only : getstate
-c$$$#endif
+#if defined( _TRAJECTORY_ )
+      use m_iostate, only : putstate
+#endif
+
+#if defined( EXTERNAL_TRAJECTORY )
+       use m_iostate, only : getstate
+#endif
 
       use fvcore, only: fvcore_do, ns
       use fvcore, only: fvcore_tape_rec            ! FastOpt

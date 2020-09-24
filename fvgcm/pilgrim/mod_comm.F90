@@ -27,16 +27,16 @@
       integer, parameter :: nbuf = 2
       integer, parameter :: nghost = 3
 
-#  if !defined(USE_MLP)
-#    include "mpif.h"
-#    define mp_precision MPI_DOUBLE_PRECISION
+#if !defined(USE_MLP)
+#include "mpif.h"
+#define mp_precision MPI_DOUBLE_PRECISION
 
       integer, save :: pkgs_per_pro
       integer, save :: idimsize
       integer, parameter :: max_call = 2*2    ! FastOpt tangent need twice as much
       integer, parameter :: igosouth = 0
       integer, parameter :: igonorth = 1
-#    if defined(AIX) && defined(MPI2)
+#if defined(AIX) && defined(MPI2)
       integer(kind=MPI_ADDRESS_KIND) intptr
       pointer (buff_r_ptr, buff_r)
       pointer (buff_s_ptr, buff_s)
@@ -48,57 +48,57 @@
       real :: buff4d
       real*4 :: buff4d_r4
       integer :: buff3d_i
-#    else /* AIX & MPI2 */
+#else /* AIX & MPI2 */
       real, allocatable, SAVE:: buff_r(:)
       real, allocatable, SAVE:: buff_s(:)
       real, allocatable, SAVE:: buff4d(:)
       real*4, allocatable, SAVE:: buff4d_r4(:)
       integer, allocatable, SAVE:: buff3d_i(:)
-#    endif /* AIX & MPI2 */
+#endif /* AIX & MPI2 */
       integer, SAVE:: ncall_s
       integer, SAVE:: ncall_r
 
-#    if defined(MPI2)
-#      if defined(LINUX)
-#        define MPI_ADDRESS_KIND 8
+#if defined(MPI2)
+#if defined(LINUX)
+#define MPI_ADDRESS_KIND 8
         integer, parameter :: MPI_MODE_NOCHECK             = 0
         integer, parameter :: MPI_MODE_NOSTORE             = 0
         integer, parameter :: MPI_MODE_NOPUT               = 0
         integer, parameter :: MPI_MODE_NOPRECEDE           = 0
         integer, parameter :: MPI_MODE_NOSUCCEED           = 0
-#      endif /* LINUX */
+#endif /* LINUX */
       integer(kind=MPI_ADDRESS_KIND) bsize, tdisp
       integer, SAVE:: buffwin      ! Communication window
       integer, SAVE:: buff4dwin    ! Communication window
       integer, SAVE:: buff4d_r4win ! Communication window
       integer, SAVE:: buff3d_iwin  ! Communication window
-#    else /* MPI2 */
+#else /* MPI2 */
       integer, SAVE:: tdisp
       integer, SAVE:: nsend                   ! Number of messages out-going
       integer, SAVE:: nrecv                   ! Number of messages in-coming
       integer, SAVE:: nread                   ! Number of messages read
       integer, SAVE, allocatable:: sqest(:)
       integer, SAVE, allocatable:: rqest(:)
-#    endif /* MPI2 */
+#endif /* MPI2 */
 
       integer, SAVE,public:: commglobal   ! Global Communicator
       integer, SAVE:: Status(MPI_STATUS_SIZE)
       integer, SAVE, allocatable:: Stats(:)
       integer ierror
 
-#  else /* USE_MLP */
+#else /* USE_MLP */
 
-#    if defined (LAHEY)
+#if defined (LAHEY)
 
-#      define PTR_INT TRUE
-#      define NOT_ASSIGNED
+#define PTR_INT TRUE
+#define NOT_ASSIGNED
 
-#      include "mlp_ptr.h"
+#include "mlp_ptr.h"
 
-#      undef  PTR_INT
-#      undef NOT_ASSIGNED
+#undef  PTR_INT
+#undef NOT_ASSIGNED
 
-#    else /* LAHEY */
+#else /* LAHEY */
 !
 ! Main vars:
 !
@@ -134,8 +134,8 @@
 !
       pointer (wing_1d, g_1d)
       real, allocatable :: g_1d(:)
-#    endif /* LAHEY */
-#  endif /* USE_MLP */
+#endif /* LAHEY */
+#endif /* USE_MLP */
 
       integer, SAVE, allocatable, public:: numcps(:)
       integer, SAVE, public:: nowpro,numpro,numcpu  
@@ -185,14 +185,14 @@
       public mp_sum1d
       public mp_reduce_max
       public mp_send4d_ns,mp_recv4d_ns, mp_recv2_n,mp_send2_s
-#  if defined(USE_MLP)
+#if defined(USE_MLP)
       public Ga_Put
       public Ga_Get
-#  endif /* USE_MLP */
+#endif /* USE_MLP */
 
-#  if defined (SEMA)
+#if defined (SEMA)
       integer semid
-#  endif /* SEMA */
+#endif /* SEMA */
 
 !.................
 
@@ -269,37 +269,37 @@
       maxpro = PLAT/4      ! This is the max 1D decomp
       max_nq = PCNST + 1
 
-#  if !defined(USE_MLP)
+#if !defined(USE_MLP)
 
       idimsize = PLON*nghost*PLEV*PCNST
-#    if defined(AIX) && defined(MPI2)
+#if defined(AIX) && defined(MPI2)
       integer(kind=MPI_ADDRESS_KIND) intptr
       allocate (buff_r(idimsize*nbuf*max_call))
       allocate (buff_s(idimsize*nbuf*max_call))
       allocate (buff4d(PLON*PLAT*(PLEV+1)*PCNST))
       allocate (buff4d_r4(PLON*PLAT*(PLEV+1)*PCNST))
       allocate (buff3d_i(PLON*PLAT*PLEV))
-#    else /* AIX & MPI2 */
+#else /* AIX & MPI2 */
       allocate( buff_r(idimsize*nbuf*max_call) )
       allocate ( buff_s(idimsize*nbuf*max_call) )
       allocate ( buff4d(PLON*PLAT*(PLEV+1)*PCNST) )
       allocate ( buff4d_r4(PLON*PLAT*(PLEV+1)*PCNST) )
       allocate ( buff3d_i(PLON*PLAT*PLEV) )
-#    endif /* AIX & MPI2 */
+#endif /* AIX & MPI2 */
 
-#    if defined(MPI2)
-#    else /* MPI2 */
+#if defined(MPI2)
+#else /* MPI2 */
       allocate (sqest(nbuf*max_call))
       allocate (rqest(nbuf*max_call))
-#    endif /* MPI2 */
+#endif /* MPI2 */
 
       allocate (Stats(nbuf*max_call*MPI_STATUS_SIZE))
 
-#  else /* USE_MLP */
+#else /* USE_MLP */
 
-#    if defined (LAHEY)
+#if defined (LAHEY)
 
-#    else /* LAHEY */
+#else /* LAHEY */
 !
 ! Main vars:
 !
@@ -329,8 +329,8 @@
 ! General purpose 1D array
 !
       allocate( g_1d(PLAT) )
-#    endif /* LAHEY */
-#  endif /* USE_MLP */
+#endif /* LAHEY */
+#endif /* USE_MLP */
 
       allocate (numcps(maxpro))
 
@@ -338,7 +338,7 @@
 
       subroutine mp_init
 
-#  if !defined(USE_MLP)
+#if !defined(USE_MLP)
         integer idimBuff, idimBuff4d
         integer n, nowpro, nowcpu
         integer npthreads
