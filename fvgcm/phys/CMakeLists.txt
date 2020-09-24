@@ -15,6 +15,7 @@ target_sources (fvgcm PRIVATE
   ccmoce.F    dadadj.F    inifld.F   mgwdrag.F    pbldif_simpl.F     radems.F  srfsice.F   trcems.F        wheneq.F
   ccmslp.F    diagbma.F   initext.F  mgwinti.F    pbldif_simpl_tq.F  radini.F  srftsb.F    trcmix.F        whenfgt.F
   m_pmgrid.F  m_comsrf.F
+  comcon.h
 )
 
-target_include_directories (fvgcm PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>)
+target_include_directories (fvgcm PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}>)

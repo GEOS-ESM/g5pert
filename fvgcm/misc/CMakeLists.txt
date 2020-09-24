@@ -5,6 +5,7 @@ target_sources (fvgcm PRIVATE
   avgp2.F90       drymadj.F90   grads_ctl.F90  len_trim.F90  par_vecsum.F90  slp_das.F90     vmax4.F90         zflip.F90
   blowup.F90      epvd.F90      hswf.F90       linint.F90    pmaxmin.F90     time_shift.F90  vmax.F90          zmean.F90
   timingModule.F90 adtimingmodule.F90 g_timingmodule.F90
+  diag.h
 )
 
-target_include_directories (fvgcm PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>)
+target_include_directories (fvgcm PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}>)
