@@ -452,6 +452,7 @@
       call getparam ( 'vnorm', vnorm )
       call getparam ( 'eps_eer', eps_eer )
       print *, 'enorm using eps_eer: ', eps_eer
+      print *, 'enorm v-weights opt: ', vnorm
       tfac=0.5d0*Cp/tref
       ufac=0.5d0
       pfac=0.5d0*R*tref/pref**2

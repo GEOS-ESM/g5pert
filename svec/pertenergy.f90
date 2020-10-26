@@ -146,6 +146,7 @@
       character(len=255) :: pertfile, ref_state_file, energy_file, rcfile
       character*10 str
       real eps_eer
+      integer vnorm
 
 !     Defaults
 !     --------
@@ -161,6 +162,7 @@
       expid       = 'null'
       notag       = .false.
       eps_eer     = -999.0
+      vnorm       = -999
 
 !     Parse command line
 !     ------------------
@@ -222,6 +224,11 @@
             call GetArg ( iArg, expid )
          else if (index(argv,'-notag' ) .gt. 0 ) then
             notag = .true.
+         else if (index(argv,'-vnorm' ) .gt. 0 ) then
+            if ( iarg+1 .gt. argc ) call usage()
+            iarg = iarg + 1
+            call GetArg ( iArg, argv )
+            read(argv,*) vnorm
          else if (index(argv,'-rc' ) .gt. 0 ) then
             if ( iarg+1 .gt. argc ) call usage()
             iarg = iarg + 1
@@ -261,6 +268,14 @@
           else
              call pertutil_setparam ( 'eps_eer', real(eps_eer,r8) )
           endif
+          if (vnorm < 0.0) then
+             print* 
+             print*, myname, ': when no RC-file command line vnorm must be used'
+             print* 
+             call usage()
+          else
+             call pertutil_setparam ( 'vnorm', vnorm )
+          endif
       endif
       dynfiles(3) = energy_file
 
@@ -299,14 +314,18 @@
       print *
       print *, '-pert   pert        filename of perturbation file'
       print *, '                    (default: pert.nc4)'
-      print *, '-eps_eer EPS_EER    must be specified when RC file not given'
       print *
       print *, '-rc     rcfile      resource file to control processing, overrides -ref and -pert'
       print *, '                    REQUIRED to process multiple perturbation files'
       print *, '                    OPTIONAL to process a single perturbation file'
       print *, '                    (default name: pertenegy.rc)'
       print *
-      print *, ' Last updated: 14 Sep 2013; Todling '
+      print *, ' The following must be specified when RC not used:'
+      print *
+      print *, '-eps_eer EPS_EER    q-coeff for TE norm (default: none)'
+      print *, '-vnorm   0,1,or 2   vertical weight in TE norm (default: none)'
+      print *
+      print *, ' Last updated: 29 Aug 2020; Todling '
       print *
       call MP_finalize(ier)
         if(ier/=0) call MP_die(myname,'MP_finalized()',ier)
