@@ -11,6 +11,8 @@
 !
 ! !USES:
                                                                                                                            
+  use precision
+
   use m_mpif90,only : MP_init
   use m_mpif90,only : MP_finalize
   use m_mpif90,only : MP_comm_rank
@@ -134,6 +136,8 @@
       character(len=255) :: sensfile, ref_state_file, Jnorm_file
       character*10 str
       logical      pick
+      real eps_eer
+      integer vnorm
 
 !     Defaults
 !     --------
@@ -146,6 +150,8 @@
       nymd = 0
       nhms = 0
       vectype = 4
+      eps_eer = -999.0
+      vnorm = -999
 
 !     Parse command line
 !     ------------------
@@ -162,6 +168,11 @@
 
          if (index(argv,'-g5' ) .gt. 0 ) then
             vectype = 5
+         else if (index(argv,'-eps_eer' ) .gt. 0 ) then
+            if ( iarg+1 .gt. argc ) call usage()
+            iarg = iarg + 1
+            call GetArg ( iArg, argv )
+            read(argv,*) eps_eer
          else if (index(argv,'-o' ) .gt. 0 ) then
             if ( iarg+1 .gt. argc ) call usage()
             iarg = iarg + 1
@@ -186,6 +197,11 @@
             iarg = iarg + 1
             call GetArg ( iArg, Jnorm_file )
             nfiles = nfiles + 1
+         else if (index(argv,'-vnorm' ) .gt. 0 ) then
+            if ( iarg+1 .gt. argc ) call usage()
+            iarg = iarg + 1
+            call GetArg ( iArg, argv )
+            read(argv,*) vnorm
          else if (index(argv,'-pick' ) .gt. 0 ) then
             pick = .true.
             if ( iarg+2 .gt. argc ) call usage()
@@ -209,6 +225,25 @@
             dynfiles(2) = trim(ref_state_file)
             dynfiles(3) = trim(pertfile)
             dynfiles(4) = trim(Jnorm_file)
+
+      if ( rcfile=='NONE' ) then
+          if (eps_eer < 0.0) then
+             print*
+             print*, myname, ': when no RC-file command line eps_eer must be used'
+             print*
+             call usage()
+          else
+             call pertutil_setparam ( 'eps_eer', real(eps_eer,r8) )
+          endif
+          if (vnorm < 0.0) then
+             print*
+             print*, myname, ': when no RC-file command line vnorm must be used'
+             print*
+             call usage()
+          else
+             call pertutil_setparam ( 'vnorm', vnorm )
+          endif
+      endif
 
 
       end subroutine Init_
@@ -248,7 +283,12 @@
       print *, '                    in output pertfile'
       print *, '              (default: output file will be in THETA)'
       print * 
-      print *, ' Last updated: 06 Mar 2009; Todling '
+      print *, ' When no RC is specified the following must be specified as command line args' 
+      print * 
+      print *, '-eps_eer EPS_EER    q-coeff for TE norm (default: none)'
+      print *, '-vnorm   0,1,or 2   vertical weight in TE norm (default: none)'
+      print * 
+      print *, ' Last updated: 29 Aug 2020; Todling '
       print *
       call MP_finalize(ier)
         if(ier/=0) call MP_die(myname,'MP_finalized()',ier)

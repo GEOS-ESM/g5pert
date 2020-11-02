@@ -5,5 +5,3 @@ target_sources (fvgcm PRIVATE
   control.F90  dependent.F90  fillz.F90        highp2.F90  m_pftSV.F90      pft_cf.F90   prognostics.F90  stepon.F       upol5.F90
   m_trajmng.F m_trjphys.F90   a2d3d.F90        m_delp2ps.F90  prognostics_q.F90
 )
-
-target_include_directories (fvgcm PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

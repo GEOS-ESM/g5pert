@@ -7,7 +7,8 @@ target_sources (fvgcm PRIVATE
   ao_i.F      cell_area.F  getavu.F     histnam.F  landwat.F  lsmmap.F   memget.F   rank.F     snoalb.F   soitem.F   timedate.F
   area_ave.F  cell_box.F   getfil.F     histslf.F  lencs.F    lsmres.F   mlf2xy.F   rankn.F    snoconi.F  stomata.F  tridia.F
   atmini.F    cell_edge.F  histcrt.F    histtc.F   lsmctli.F  lsmtci.F   msspni.F   relavu.F   snoh2o.F   stoprun.F  twostr.F
+  preproc.h
 )
 
-target_include_directories (fvgcm PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories (fvgcm PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}>)
 
