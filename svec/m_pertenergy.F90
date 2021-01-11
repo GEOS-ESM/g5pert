@@ -447,7 +447,7 @@
         jfac(j)=jweights(j)*dbleimr
       enddo
 
-! One factor of 0.5 is for defenition of energy as 1/2 * ...
+! One factor of 0.5 is for definition of energy as 1/2 * ...
 ! Assumption here is that sum(jweights)=1
       call getparam ( 'vnorm', vnorm )
       call getparam ( 'eps_eer', eps_eer )
