@@ -413,7 +413,10 @@
           call setparam ( 'wgrid', 'a'   )
       endif
 
-      if ( trim(RCfile) == "NONE" ) return
+      if ( trim(RCfile) == "NONE" ) then
+         print *, "Not using RC file, taking values from command line only"
+         return
+      endif
 
 !     Load resources from fvpert.rc
 !     -----------------------------

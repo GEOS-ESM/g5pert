@@ -746,10 +746,11 @@
 
 !     Initialize parameters independently of whether RCfile used or not
 !     -----------------------------------------------------------------
-      eps_eer = 1.0d0
-      call setparam ( 'eps_eer', eps_eer )
 
-      if (rcfile=='null') return 
+      if (rcfile=='null') then
+         print *, "Not using RC file, taking values from command line only"
+         return 
+      endif
 
       call MP_comm_rank(comm,myID,ierr)
         if(ierr/=0) call MP_die(myname_,'MP_comm_rank()',ierr)
@@ -849,6 +850,7 @@
 
 !     Read Ehrendorfer, Errico, and Raeder's epsilon factor (apply to Q-component)
 !     ----------------------------------------------------------------------------
+      eps_eer = 1.0d0
       call I90_label('ehrendorfer_errico_raedder_eps:', iret)
       if (iret .ne. 0) then
         write(stderr,'(2a,i5)') myname_, ': I90_label error, iret =',iret

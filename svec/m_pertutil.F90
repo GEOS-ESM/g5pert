@@ -492,6 +492,8 @@
 ! Assumption for division by area where sum(jweights)=1
       call pertutil_getparam ( 'vnorm', vnorm )
       call pertutil_getparam ( 'eps_eer', eps_eer )
+      write(stdout,'(a,1p,i5)') 'Vertical norm set: ',vnorm
+      write(stdout,'(a,1p,e13.6)') 'Ehrendorfer, Errico, and Raeder eps: ',eps_eer
       tfac=0.5d0*Cp/tref
       ufac=0.5d0
       pfac=0.5d0*R*tref/pref**2
@@ -789,6 +791,8 @@
 ! Assumption for division by area where sum(jweights)=1
       call pertutil_getparam ( 'vnorm', vnorm )
       call pertutil_getparam ( 'eps_eer', eps_eer )
+      write(stdout,'(a,1p,i5)') 'Vertical norm set: ',vnorm
+      write(stdout,'(a,1p,e13.6)') 'Ehrendorfer, Errico, and Raeder eps: ',eps_eer
       ufac=0.5d0
       tfac=0.5d0*Cp/tref
       pfac=0.5d0*R*tref/pref**2
