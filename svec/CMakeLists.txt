@@ -46,7 +46,7 @@ ecbuild_add_executable(TARGET simsv.x SOURCES simsv.f90 LIBS ${this})
 ecbuild_add_executable(TARGET svspectra.x SOURCES svspectra.f90 LIBS ${this})
 
 if (EXTENDED_SOURCE)
-  set_target_properties (${this} PROPERTIES COMPILE_FLAGS ${EXTENDED_SOURCE})
+  target_compile_options (${this} PRIVATE $<$<COMPILE_LANGUAGE:Fortran>:${EXTENDED_SOURCE}>)
 endif()
 
 target_compile_definitions (${this} PRIVATE REAL8 LSMH_off VERSION=\"fvgcm\")
