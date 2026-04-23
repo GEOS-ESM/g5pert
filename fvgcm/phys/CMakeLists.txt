@@ -18,4 +18,8 @@ target_sources (fvgcm PRIVATE
   comcon.h
 )
 
+if(CMAKE_Fortran_COMPILER_ID STREQUAL "GNU")
+  # cure GNU Error: Cray pointer declaration at (1) requires ‘-fcray-pointer’ flag
+  target_compile_options(fvgcm PRIVATE -fcray-pointer)
+endif()
 target_include_directories (fvgcm PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}>)

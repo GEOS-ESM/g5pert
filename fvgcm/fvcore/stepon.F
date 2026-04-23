@@ -654,7 +654,7 @@
       if (present(rstskip) ) then
           rstskip_ = rstskip
       endif
-      if (rstskip_) return
+      if (rstskip_ /= 0) return
 
 ! Get initial condition for the dynamics.
       call timing_on('rst_dyn')

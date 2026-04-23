@@ -61,7 +61,7 @@ SUBROUTINE shr_sys_system(str,rcode)
 #endif
 
 #if (defined OSF1 || defined SUNOS || defined LINUX)
-   rcode = system(str)
+   call execute_command_line(str, exitstat=rcode)
 #endif
 
 #if (!defined CRAY && !defined IRIX64 && !defined AIX && !defined OSF1 && !defined SUNOS && !defined LINUX)
@@ -83,29 +83,17 @@ SUBROUTINE shr_sys_chdir(path, rcode)
 
    !----- local -----
    integer(SHR_KIND_IN)             :: lenpath ! length of path
-#if (defined AIX || defined OSF1 || defined SUNOS || defined LINUX)
-   integer(SHR_KIND_IN),external    :: chdir   ! AIX system call
-#endif
-
-!-------------------------------------------------------------------------------
-! PURPOSE: an architecture independant system call
-!-------------------------------------------------------------------------------
-
-   lenpath=len_trim(path)
 
 #if (defined IRIX64 || defined CRAY)
+   lenpath=len_trim(path)
    call pxfchdir(path, lenpath, rcode)
-#endif
-
-#if (defined AIX)
-   rcode=chdir(%ref(path(1:lenpath)//'\0'))
-#endif
-
-#if (defined OSF1 || defined SUNOS || defined LINUX)
-   rcode=chdir(path(1:lenpath))
-#endif
-
-#if (!defined CRAY && !defined IRIX64 && !defined AIX && !defined OSF1 && !defined SUNOS && !defined LINUX)
+#elif (defined AIX)
+   lenpath=len_trim(path)
+   integer(SHR_KIND_IN),external    :: chdir
+   rcode=chdir(path(1:lenpath)//char(0))
+#elif (defined OSF1 || defined SUNOS || defined LINUX)
+   call chdir(trim(path), rcode)
+#else
    write(*,*) '(shr_sys_chdir) ERROR: no implementation for this architecture'
    call shr_sys_abort('no implementation of chdir for this machine')
 #endif

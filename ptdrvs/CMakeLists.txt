@@ -8,9 +8,17 @@ esma_add_library (${this}
 ecbuild_add_executable(TARGET fvmodel.x SOURCES fvmodel.F90 LIBS GMAO_mpeu fvgcm svec parpack)
 ecbuild_add_executable(TARGET fvpert.x SOURCES fvpert.F90 LIBS GMAO_mpeu fvgcm svec parpack)
 ecbuild_add_executable(TARGET fvsens.x SOURCES fvsens.F90 LIBS GMAO_mpeu fvgcm svec parpack)
+
+if(NOT CMAKE_Fortran_COMPILER_ID STREQUAL "GNU")
 #fvsvec still needs work circular dependency between arpack and g5pert
 ecbuild_add_executable(TARGET fvsvec.x SOURCES fvsvec.F90 
    LIBS svec arpack parpack planso lanso svec fvgcm arpack parpack GMAO_hermes GMAO_gfio_r8 util putil GMAO_mpeu)
+else()
+ecbuild_add_executable(TARGET fvsvec.x SOURCES fvsvec.F90
+   LIBS -Wl,--start-group svec arpack parpack planso lanso svec fvgcm arpack parpack -Wl,--end-group GMAO_hermes GMAO_gfio_r8 util putil GMAO_mpeu)
+target_link_options(fvsvec.x PRIVATE -lgfortran -Wl,--no-as-needed)
+endif()
+
 ecbuild_add_executable(TARGET jactest.x SOURCES jactest.F90 LIBS GMAO_mpeu fvgcm svec parpack)
 ecbuild_add_executable(TARGET qpert.x SOURCES qpert.F90 LIBS GMAO_mpeu fvgcm svec parpack)
 ecbuild_add_executable(TARGET qsens.x SOURCES qsens.F90 LIBS GMAO_mpeu fvgcm svec parpack)

@@ -22,6 +22,7 @@ C-----------------------------Arguments---------------------------------
 C
 C Input
 C
+      integer address
       pointer (address,space)   ! Pointer to dynamically allocated space
       real space
 C

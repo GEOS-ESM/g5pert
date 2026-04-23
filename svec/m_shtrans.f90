@@ -497,7 +497,7 @@
 
 ! !INPUT PARAMETERS:
 
-      character(len=nfields), intent(in)  :: name ! values of S or V 
+      character(len=*), intent(in)  :: name ! values of S or V
       integer,  intent(in)  :: mmax    ! maximum zonal wave number m
       integer,  intent(in)  :: nmax    ! maximum n for m=0
       integer,  intent(in)  :: kmax    ! maximum n for any m
