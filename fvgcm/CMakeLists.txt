@@ -10,7 +10,7 @@ set (FVGCMTRC 1)
 add_custom_command (OUTPUT fvgcm.h
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
   COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/fvsetdim -t ${FVGCMTRC} ${FVGCMRES}
-  COMMENT where or where 
+  COMMENT "where or where"
   )
 
 add_custom_target (fvgcm_inc DEPENDS fvgcm.h)

@@ -1,3 +1,5 @@
+cmake_minimum_required (VERSION 3.24)  # LINK_GROUP:RESCAN requires 3.24+
+
 esma_set_this ()
 
 esma_add_library (${this}
@@ -8,9 +10,13 @@ esma_add_library (${this}
 ecbuild_add_executable(TARGET fvmodel.x SOURCES fvmodel.F90 LIBS GMAO_mpeu fvgcm svec parpack)
 ecbuild_add_executable(TARGET fvpert.x SOURCES fvpert.F90 LIBS GMAO_mpeu fvgcm svec parpack)
 ecbuild_add_executable(TARGET fvsens.x SOURCES fvsens.F90 LIBS GMAO_mpeu fvgcm svec parpack)
-#fvsvec still needs work circular dependency between arpack and g5pert
-ecbuild_add_executable(TARGET fvsvec.x SOURCES fvsvec.F90 
-   LIBS svec arpack parpack planso lanso svec fvgcm arpack parpack GMAO_hermes GMAO_gfio_r8 util putil GMAO_mpeu)
+#fvsvec has circular dependencies between svec, arpack, parpack, planso, and lanso.
+#Use LINK_GROUP:RESCAN (CMake 3.24+) to generate --start-group/--end-group so the
+#linker repeatedly scans those archives until all references are resolved.
+ecbuild_add_executable(TARGET fvsvec.x SOURCES fvsvec.F90)
+target_link_libraries(fvsvec.x PRIVATE
+   "$<LINK_GROUP:RESCAN,svec,arpack,parpack,planso,lanso>"
+   fvgcm GMAO_hermes GMAO_gfio_r8 util putil GMAO_mpeu)
 ecbuild_add_executable(TARGET jactest.x SOURCES jactest.F90 LIBS GMAO_mpeu fvgcm svec parpack)
 ecbuild_add_executable(TARGET qpert.x SOURCES qpert.F90 LIBS GMAO_mpeu fvgcm svec parpack)
 ecbuild_add_executable(TARGET qsens.x SOURCES qsens.F90 LIBS GMAO_mpeu fvgcm svec parpack)
